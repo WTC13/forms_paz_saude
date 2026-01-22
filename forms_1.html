@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./public/css/style.css">
+        <link rel="shortcut icon" href="./public/img/logo.png" type="image/x-icon">
+        <title>Login</title>
+    </head>
+    <body>
+        <div class="login-box">
+            <h2>Login</h2>
+            <form id="form">
+                <div class="user-box">
+                    <input type="text" name="nome" required>
+                    <label for="">Nome</label> 
+                </div>
+                <div class="user-box">
+                    <input type="text" name="email" required>
+                    <label for="">E-mail</label> 
+                </div>
+                <div class="user-box">
+                    <input type="text" name="telefone" required>
+                    <label for="">Telefone</label>
+                </div>
+                <div class="user-box">
+                    <input type="text" name="cidade" required>
+                    <label for="">Cidade</label>
+                </div>
+                <div class="user-box">
+                    <input type="text" name="plano" required>
+                    <label>Tem plano de saúde ?</label>
+                </div>
+                <div class="user-box">
+                    <input type="text" name="hospital" required>
+                    <label for="">Hospital de preferência</label>
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="./controller/send.js"></script>
+        <script src="./public/js/script.js"></script>
+        
+    </body>
+</html>
