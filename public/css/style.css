@@ -218,3 +218,30 @@ body{
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
 }
+
+@media (max-width: 480px) {
+    .login-box {
+        /* Em telas pequenas, usamos 90% da largura da tela */
+        width: 90%; 
+        /* Removemos a altura fixa para o conteúdo não vazar */
+        height: auto; 
+        /* Diminuímos um pouco o padding interno */
+        padding: 30px 20px;
+        /* Garantimos que fique centralizado */
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .login-box h2 {
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    /* Ajuste para os botões não ficarem colados na borda */
+    .btn-next, .btn-animation {
+        width: 100%; /* Botão ocupa a largura toda no mobile (opcional) */
+        float: none;
+        margin-top: 20px;
+    }
+}
