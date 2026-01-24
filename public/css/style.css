@@ -84,16 +84,20 @@ body{
 .login-box form .btn-animation{
     position: relative;
     display: inline-block;
-    padding: 10px 20px;
+    background: transparent;
+    padding: 8px 20px;
     color: #ececec;
     font-size: 16px;
-    font-weight: 600;
+    font-family: 'Poppins';
+    /* font-weight: 600; */
     text-decoration: none;
-    text-transform: uppercase;
+    text-transform: capitalize;
+    border: 1px solid #ececec;
+    border-radius: 4px;
     overflow: hidden;
     transition: .5s;
-    margin-top: 40px;
-    letter-spacing: 4px;
+    /* margin-top: 40px; */
+    /* letter-spacing: 4px; */
 }
 
 .login-box .btn-animation:hover{
@@ -120,7 +124,7 @@ body{
     animation: btn-anim1 1s linear infinite;
 }
 
-@keyframes btn-anim1{
+/* @keyframes btn-anim1{
     0%{
         left: -100%;
     }
@@ -184,7 +188,7 @@ body{
     50%,100%{
         bottom: 100%;
     }
-}
+} */
 
 /* --- Novas regras para o fluxo interativo --- */
 
@@ -214,9 +218,99 @@ body{
     background: rgba(255, 255, 255, 0.2);
 }
 
+.options-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.btn-option {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    color: #ececec;
+    font-family: 'Poppins';
+}
+
+.btn-option:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(5px);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.option-letter {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-weight: bold;
+    margin-right: 15px;
+    font-size: 14px;
+}
+
+.option-icon {
+    margin-right: 15px;
+    font-size: 18px;
+}
+
+.option-text {
+    font-weight: 500;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+
 @keyframes slideIn {
     from { opacity: 0; transform: translateX(20px); }
     to { opacity: 1; transform: translateX(0); }
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+/* Estilo do botão Voltar */
+.btn-prev {
+    background: transparent;
+    border: 1px solid #ececec;
+    color: #ececec;
+    padding: 8px 20px;
+    /* text-decoration: underline; */
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Poppins';
+    font-size: 14px;
+    opacity: 0.7;
+    transition: 0.3s;
+}
+
+.btn-prev:hover {
+    opacity: 1;
+}
+
+select {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ececec;
+    color: #ececec;
+    padding: 10px 0;
+    font-family: 'Poppins';
+    font-size: 16px;
+    outline: none;
+}
+select option {
+    background: #1e40af; /* Fundo para as opções serem legíveis */
+    color: white;
 }
 
 @media (max-width: 480px) {
@@ -243,5 +337,10 @@ body{
         width: 100%; /* Botão ocupa a largura toda no mobile (opcional) */
         float: none;
         margin-top: 20px;
+    }
+    
+    .button-group {
+        flex-direction: column-reverse; /* Voltar fica embaixo do Próximo no mobile */
+        gap: 15px;
     }
 }
