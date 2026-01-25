@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./public/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.17/dist/sweetalert2.min.css">
     <link rel="shortcut icon" href="./public/img/logo.png" type="image/x-icon">
     <title>Login</title>
 </head>
 <body>
     <div class="login-box">
-        <h2 id="form-title">Cadastro</h2>
+        <!-- <h2 id="form-title">Cadastro</h2> -->
         <form id="form">
             <div class="step active" data-step="1">
                 <h2>1 - POSSUI CNPJ?*</h2>
@@ -25,7 +26,6 @@
                     </button>
                 </div>
                 <div class="button-group">
-                    <!-- <button type="button" class="btn-prev" onclick="prevStep()">Voltar</button> -->
                     <button type="button" class="btn-next" onclick="nextStep()">Próximo</button>
                 </div>
                 <input type="hidden" name="cnpj_status" id="cnpj_status">
@@ -89,21 +89,21 @@
 
                 <div class="button-group">
                     <button type="button" class="btn-prev" onclick="prevStep()">Voltar</button>
-                    <button type="button" class="btn-next" id="btn-next-plano" style="display:none;" onclick="nextStep()">Próximo</button>
+                    <button type="button" class="btn-next" id="btn-next-plano" onclick="nextStep()">Próximo</button>
                 </div>
             </div>
 
             <div class="step" data-step="4">
                 <h2>4 - QUAL O CUSTO DO SEU PLANO ATUAL?</h2>
                 <div class="options-container">
-                    <button type="button" class="btn-option" onclick="selectAndNext('custo_plano', '500 a 3k')">
-                        <span class="option-letter">A</span><span class="option-text">Entre 500 a 3k</span>
+                    <button type="button" class="btn-option" onclick="selectAndNext('custo_plano', '500 a 3 mil')">
+                        <span class="option-letter">A</span><span class="option-text">Entre R$ 500,00 a R$ 3.000,00</span>
                     </button>
-                    <button type="button" class="btn-option" onclick="selectAndNext('custo_plano', '3k a 4k')">
-                        <span class="option-letter">B</span><span class="option-text">Entre 3k a 4k</span>
+                    <button type="button" class="btn-option" onclick="selectAndNext('custo_plano', '3 mil a 4 mil')">
+                        <span class="option-letter">B</span><span class="option-text">Entre R$ 3.000,00 a R$ 4.000,00</span>
                     </button>
-                    <button type="button" class="btn-option" onclick="selectAndNext('custo_plano', '+ 4k')">
-                        <span class="option-letter">C</span><span class="option-text">+ Mais de 4k</span>
+                    <button type="button" class="btn-option" onclick="selectAndNext('custo_plano', 'mais de 4 mil')">
+                        <span class="option-letter">C</span><span class="option-text">+ Mais de R$ 4.000,00</span>
                     </button>
                 </div>
                 <input type="hidden" name="custo_plano" id="custo_plano">
@@ -172,7 +172,7 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="./public/js/script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.26.17/dist/sweetalert2.all.min.js"></script>
     <script src="./controller/send.js"></script>
 </body>
 </html>

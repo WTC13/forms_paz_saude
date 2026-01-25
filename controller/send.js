@@ -1,34 +1,74 @@
 let stepHistory = [];
 
 // Função para avançar normal (Passo + 1)
+// 1. Lógica de Navegação com Verificação
 function nextStep() {
     const currentStep = document.querySelector('.step.active');
     const stepNum = parseInt(currentStep.dataset.step);
     
-    // Se estivermos no passo 3 e for 'OUTRO', validamos se o texto foi digitado
+    // 1. Verificação de Opções (Inputs Hidden para botões)
+    const hiddenInput = currentStep.querySelector('input[type="hidden"]');
+    if (hiddenInput && hiddenInput.value.trim() === "") {
+        Swal.fire({
+            title: "Você não selecionou uma opção",
+            text: "Para continuar, selecione uma opção!",
+            icon: "warning",
+            confirmButtonText: "OK"
+        });
+        return;
+    }
+
+    // 2. Verificação de Inputs de Texto
+    const textInput = currentStep.querySelector('input[type="text"]');
+    
+    if (textInput && textInput.hasAttribute('required')) {
+        const value = textInput.value.trim();
+
+        // Validação Geral: Não pode estar vazio
+        if (value === "") {
+            Swal.fire({
+                title: "Você não selecionou uma opção",
+                text: "Para continuar, selecione uma opção!",
+                icon: "warning"
+            });
+            textInput.focus();
+            return;
+        }
+
+        // --- VALIDAÇÃO ESPECÍFICA DO PASSO 7 (Hospitais) ---
+        if (stepNum === 7) {
+            // Regex que verifica se o campo contém pelo menos uma letra
+            // Se test() retornar false, significa que só existem números ou símbolos
+            const regexContemLetras = /[a-zA-Z]/;
+            
+            if (!regexContemLetras.test(value)) {
+                Swal.fire({
+                    title: "Você informou apenas números",
+                    text: "Coloque o nome do hospital corretamente!",
+                    icon: "warning"
+                });
+                textInput.focus();
+                return;
+            }
+        }
+    }
+
     if (stepNum === 3) {
         const inputOculto = document.getElementById('plano_atual');
         const inputOutroNome = document.getElementById('outro_plano_nome');
         
         if (inputOculto.value === 'OUTRO') {
             if (inputOutroNome.value.trim() === "") {
-                alert("Por favor, digite o nome do seu plano.");
+                Swal.fire({ title: "Ops!", text: "Digite o nome do seu plano.", icon: "warning" });
                 inputOutroNome.focus();
                 return;
             }
-            // Atualiza o valor oculto com o que foi digitado para ir ao banco de dados
+            // ESSA LINHA É ESSENCIAL: Transfere o texto digitado para o campo que vai para a planilha
             inputOculto.value = "OUTRO: " + inputOutroNome.value;
         }
     }
 
-    // Lógica padrão de avançar
-    const input = currentStep.querySelector('input[required]');
-    if (input && input.value.trim() === "") {
-        alert("Por favor, preencha o campo.");
-        input.focus();
-        return;
-    }
-
+    // Se passou em tudo, salva no histórico e avança
     stepHistory.push(stepNum);
     jumpToStep(stepNum + 1);
 }
@@ -97,7 +137,6 @@ function selectPlano(valor) {
     }
 }
 
-// Envio do formulário (Google Sheets)
 document.getElementById("form").addEventListener("submit", function(e) {
     e.preventDefault();
     const btn = this.querySelector('button[type="submit"]');
@@ -107,18 +146,53 @@ document.getElementById("form").addEventListener("submit", function(e) {
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
 
-    fetch("https://script.google.com/macros/s/AKfycbxFjOPU5nNZPhW9QOKCF429X1SHMToP2Sle4UV9SRekPCv8GKTsq6Err5D2Vl1gXT70YA/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbxDTDlXCKp-UlyoNjhF3-Davb56py-wf3LzukIQ1sscEzqz6PRJb42XU-9vJVGVv2eVGQ/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
     .then(() => {
-        alert("Obrigado! Cadastro recebido.");
-        window.location.reload();
+        // --- ADICIONADO: Envio Automático para Web3Forms ---
+        fetch("https://api.web3forms.com/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            body: JSON.stringify({
+                access_key: "8cfc61ff-fb2b-4a53-9c0b-4b72b77694a9", // Coloque sua chave aqui
+                ...data,
+                subject: "Nova Cotação Enviada."
+            })
+        });
+        // --------------------------------------------------
+
+        Swal.fire(
+            {
+                title: "Resposta enviada!",
+                text: "Deseja atendimento exclusivo via whatsapp ?",
+                icon: "success",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                confirmButtonText: "Ir para o Whatsapp"
+            }
+        ).then((result) => {
+            if(result.isConfirmed){
+                window.location.href = 'https://wa.me/5511937269362?text=Preenchi minhas informações e gostaria de uma cotação personalizada do meu plano de saúde.';
+            }
+        }) ;
     })
     .catch(() => {
-        alert("Erro ao enviar.");
+        Swal.fire(
+            {
+                title: "Cadastro não realizado!",
+                text: "Por gentileza, entre em contato com o suporte",
+                icon: "error",
+                confirmButtonText: "Falar com o suporte",
+            }
+        ).then((result) => {
+            if(result.isConfirmed){
+                window.location.href = 'https://wa.me/5511937269362?text=Não consegui preencher meu cadastro e preciso fazer uma cotação para o meu plano.';
+            }
+        });
         btn.innerText = "Enviar";
         btn.disabled = false;
     });

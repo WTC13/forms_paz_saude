@@ -62,6 +62,10 @@ body{
     background: transparent;
 }
 
+.login-box .user-box input::placeholder{
+    color: #ececec;
+}
+
 .login-box .user-box label{
     position: absolute;
     top: 0;
@@ -218,6 +222,22 @@ body{
     background: rgba(255, 255, 255, 0.2);
 }
 
+.btn-prev {
+    background: transparent;
+    border: 1px solid #ececec;
+    color: #ececec;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: 'Poppins';
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-prev:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
 .options-container {
     display: flex;
     flex-direction: column;
@@ -262,7 +282,7 @@ body{
 
 .option-text {
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     text-transform: uppercase;
 }
 
@@ -278,24 +298,6 @@ body{
     margin-top: 20px;
 }
 
-/* Estilo do botão Voltar */
-.btn-prev {
-    background: transparent;
-    border: 1px solid #ececec;
-    color: #ececec;
-    padding: 8px 20px;
-    /* text-decoration: underline; */
-    cursor: pointer;
-    border-radius: 4px;
-    font-family: 'Poppins';
-    font-size: 14px;
-    opacity: 0.7;
-    transition: 0.3s;
-}
-
-.btn-prev:hover {
-    opacity: 1;
-}
 
 select {
     width: 100%;
@@ -334,9 +336,13 @@ select option {
 
     /* Ajuste para os botões não ficarem colados na borda */
     .btn-next, .btn-animation {
-        width: 100%; /* Botão ocupa a largura toda no mobile (opcional) */
+        width: 100%;
         float: none;
         margin-top: 20px;
+    }
+
+    .btn-prev{
+        width: 100%;
     }
     
     .button-group {
