@@ -140,12 +140,15 @@ function selectPlano(valor) {
 document.getElementById("form").addEventListener("submit", function(e) {
     e.preventDefault();
     const btn = this.querySelector('button[type="submit"]');
+    const originalText = btn.innerText;
+    
     btn.innerText = "Enviando...";
     btn.disabled = true;
 
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
 
+    // 1. Envio para a Planilha do Google (Seu código original)
     fetch("https://script.google.com/macros/s/AKfycbxDTDlXCKp-UlyoNjhF3-Davb56py-wf3LzukIQ1sscEzqz6PRJb42XU-9vJVGVv2eVGQ/exec", {
         method: "POST",
         mode: "no-cors",
@@ -153,47 +156,56 @@ document.getElementById("form").addEventListener("submit", function(e) {
         body: JSON.stringify(data)
     })
     .then(() => {
-        // --- ADICIONADO: Envio Automático para Web3Forms ---
+        // --- INÍCIO DA ADIÇÃO: ENVIO AUTOMÁTICO DE E-MAIL ---
+        // Este fetch envia os dados para o seu e-mail via Web3Forms
         fetch("https://api.web3forms.com/submit", {
             method: "POST",
-            headers: { "Content-Type": "application/json", "Accept": "application/json" },
+            headers: { 
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            },
             body: JSON.stringify({
-                access_key: "8cfc61ff-fb2b-4a53-9c0b-4b72b77694a9", // Coloque sua chave aqui
-                ...data,
-                subject: "Nova Cotação Enviada."
+                access_key: "SUA_CHAVE_AQUI", // <--- COLOQUE SUA CHAVE AQUI
+                subject: "Nova Cotação: " + (data.cidade || "Lead Site"),
+                from_name: "Simulador de Planos",
+                ...data // Envia todos os campos do formulário (cnpj, idades, hospitais, etc)
             })
         });
-        // --------------------------------------------------
+        // --- FIM DA ADIÇÃO ---
 
-        Swal.fire(
-            {
-                title: "Resposta enviada!",
-                text: "Deseja atendimento exclusivo via whatsapp ?",
-                icon: "success",
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                confirmButtonText: "Ir para o Whatsapp"
-            }
-        ).then((result) => {
+        // Alerta de Sucesso
+        Swal.fire({
+            title: "Resposta enviada!",
+            text: "Deseja atendimento exclusivo via whatsapp ?",
+            icon: "success",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonText: "Ir para o Whatsapp",
+            confirmButtonColor: '#25D366'
+        }).then((result) => {
             if(result.isConfirmed){
-                window.location.href = 'https://wa.me/5511937269362?text=Preenchi minhas informações e gostaria de uma cotação personalizada do meu plano de saúde.';
-            }
-        }) ;
-    })
-    .catch(() => {
-        Swal.fire(
-            {
-                title: "Cadastro não realizado!",
-                text: "Por gentileza, entre em contato com o suporte",
-                icon: "error",
-                confirmButtonText: "Falar com o suporte",
-            }
-        ).then((result) => {
-            if(result.isConfirmed){
-                window.location.href = 'https://wa.me/5511937269362?text=Não consegui preencher meu cadastro e preciso fazer uma cotação para o meu plano.';
+                // Link corrigido com 55 e encode
+                window.location.href = 'https://wa.me/5511937269362?text=' + encodeURIComponent('Preenchi minhas informações e gostaria de uma cotação personalizada do meu plano de saúde.');
             }
         });
-        btn.innerText = "Enviar";
+    })
+    .catch((error) => {
+        console.error("Erro no envio:", error);
+        Swal.fire({
+            title: "Cadastro não realizado!",
+            text: "Por gentileza, entre em contato com o suporte",
+            icon: "error",
+            allowOutsideClick: false,
+            allowEscapeKey: false,
+            confirmButtonText: "Falar com o suporte",
+            confirmButtonColor: '#25D366'
+        }).then((result) => {
+            if(result.isConfirmed){
+                window.location.href = 'https://wa.me/5511937269362?text=' + encodeURIComponent('Não consegui concluir o cadastro no site.');
+            }
+        });
+        
+        btn.innerText = originalText;
         btn.disabled = false;
     });
 });
