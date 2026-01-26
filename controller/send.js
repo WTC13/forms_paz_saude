@@ -149,15 +149,13 @@ document.getElementById("form").addEventListener("submit", function(e) {
     const data = Object.fromEntries(formData.entries());
 
     // 1. Envio para a Planilha do Google (Seu código original)
-    fetch("https://script.google.com/macros/s/AKfycbxDTDlXCKp-UlyoNjhF3-Davb56py-wf3LzukIQ1sscEzqz6PRJb42XU-9vJVGVv2eVGQ/exec", {
+    fetch("https://script.google.com/macros/s/AKfycbznVxamzwc1PkwoDPayXQuAbvFArVDNJ5jXPKsEZeYTFM8fzSfFA58aWmOa5pExXbhK1g/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
     })
     .then(() => {
-        // --- INÍCIO DA ADIÇÃO: ENVIO AUTOMÁTICO DE E-MAIL ---
-        // Este fetch envia os dados para o seu e-mail via Web3Forms
         fetch("https://api.web3forms.com/submit", {
             method: "POST",
             headers: { 
