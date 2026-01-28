@@ -106,7 +106,7 @@ function selectAndNext(inputId, value) {
 function selectAndJump(inputId, value, target) {
     document.getElementById(inputId).value = value;
     const currentStep = document.querySelector('.step.active');
-    stepHistory.push(parseInt(currentStep.dataset.step)); // Salva onde estava
+    stepHistory.push(parseInt(currentStep.dataset.step));
     jumpToStep(target);
 }
 
@@ -119,18 +119,14 @@ function selectPlano(valor) {
     inputOculto.value = valor;
 
     if (valor === 'OUTRO') {
-        // Se for OUTRO, mostra o campo de texto e o botão de próximo
         campoExtra.style.display = 'block';
         btnNext.style.display = 'block';
         inputOutroNome.focus();
-        // Não avança automaticamente para o usuário poder digitar
-    } else {
-        // Se for um plano da lista, esconde o extra e avança direto
+    }
+    else {
         campoExtra.style.display = 'none';
         btnNext.style.display = 'none';
-        inputOutroNome.value = ''; // Limpa caso tenha digitado algo
-        
-        // Salva no histórico e pula para o passo 4
+        inputOutroNome.value = '';
         const currentStep = document.querySelector('.step.active');
         stepHistory.push(parseInt(currentStep.dataset.step));
         jumpToStep(4);
@@ -139,6 +135,23 @@ function selectPlano(valor) {
 
 document.getElementById("form").addEventListener("submit", function(e) {
     e.preventDefault();
+
+    const phoneInput = document.getElementById('phonenumber');
+    const phoneValue = phoneInput.value.replace(/\D/g, "");
+    const phoneRegex = /^[1-9]{2}9?[0-9]{8}$/;
+
+    if (!phoneRegex.test(phoneValue)) {
+        e.preventDefault();
+        Swal.fire({
+            title: "Número Inválido",
+            text: "Por favor, insira um número de telefone válido com DDD (ex: 11 99999-9999)",
+            icon: "warning",
+            confirmButtonText: "Corrigir"
+        });
+        phoneInput.focus();
+        return;
+    }
+
     const btn = this.querySelector('button[type="submit"]');
     const originalText = btn.innerText;
     
@@ -148,7 +161,6 @@ document.getElementById("form").addEventListener("submit", function(e) {
     const formData = new FormData(this);
     const data = Object.fromEntries(formData.entries());
 
-    // 1. Envio para a Planilha do Google (Seu código original)
     fetch("https://script.google.com/macros/s/AKfycbznVxamzwc1PkwoDPayXQuAbvFArVDNJ5jXPKsEZeYTFM8fzSfFA58aWmOa5pExXbhK1g/exec", {
         method: "POST",
         mode: "no-cors",
@@ -169,9 +181,6 @@ document.getElementById("form").addEventListener("submit", function(e) {
                 ...data
             })
         });
-        // --- FIM DA ADIÇÃO ---
-
-        // Alerta de Sucesso
         Swal.fire({
             title: "Resposta enviada!",
             text: "Deseja atendimento exclusivo via whatsapp ?",
@@ -206,4 +215,26 @@ document.getElementById("form").addEventListener("submit", function(e) {
         btn.innerText = originalText;
         btn.disabled = false;
     });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const phoneInput = document.getElementById('phonenumber');
+    
+    if (phoneInput) {
+        phoneInput.addEventListener('input', (e) => {
+            let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
+            
+            if (value.length > 0) {
+                value = "(" + value;
+            }
+            if (value.length > 3) {
+                value = value.slice(0, 3) + ") " + value.slice(3);
+            }
+            if (value.length > 10) {
+                value = value.slice(0, 10) + "-" + value.slice(10);
+            }
+            
+            e.target.value = value.slice(0, 15); // Limita ao formato (11) 99999-9999
+        });
+    }
 });
