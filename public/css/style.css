@@ -19,8 +19,7 @@ body {
 /* --- Container Principal (Glassmorphism) --- */
 .login-box {
     display: flex;
-    flex-direction: column; /* Lado a lado no desktop */
-    /* width: 900px; */
+    flex-direction: column;
     max-width: 95%;
     min-height: 550px;
     background: rgba(255, 255, 255, 0.1);
@@ -46,7 +45,7 @@ body {
 
 .logo-img {
     width: 100%;
-    max-width: 280px;
+    max-width: 200px;
     height: auto;
     filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
     animation: fadeIn 1s ease;
