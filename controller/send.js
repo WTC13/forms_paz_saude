@@ -217,24 +217,10 @@ document.getElementById("form").addEventListener("submit", function(e) {
     });
 });
 
-document.addEventListener('DOMContentLoaded', () => {
-    const phoneInput = document.getElementById('phonenumber');
-    
-    if (phoneInput) {
-        phoneInput.addEventListener('input', (e) => {
-            let value = e.target.value.replace(/\D/g, ""); // Remove tudo que não é número
-            
-            if (value.length > 0) {
-                value = "(" + value;
-            }
-            if (value.length > 3) {
-                value = value.slice(0, 3) + ") " + value.slice(3);
-            }
-            if (value.length > 10) {
-                value = value.slice(0, 10) + "-" + value.slice(10);
-            }
-            
-            e.target.value = value.slice(0, 15); // Limita ao formato (11) 99999-9999
-        });
-    }
+document.getElementById('phonenumber').addEventListener('input', (e) => {
+    let v = e.target.value.replace(/\D/g, "");
+    if (v.length > 0) v = "(" + v;
+    if (v.length > 3) v = v.slice(0, 3) + ") " + v.slice(3);
+    if (v.length > 10) v = v.slice(0, 10) + "-" + v.slice(10);
+    e.target.value = v.slice(0, 15);
 });
